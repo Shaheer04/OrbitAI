@@ -1,4 +1,4 @@
-import { getAIResponse } from "./ai-logic.js";
+import { getAIResponse } from "../ai-logic.js";
 
 const circle = document.getElementById("central-circle");
 const settingsToggle = document.getElementById("settings-toggle");
