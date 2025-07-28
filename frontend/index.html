@@ -1,173 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Therapist</title>
-    <style>
-        /* ------------- RESET & BASE ------------- */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0
-        }
-    
-    
-        body{
-            background-image: linear-gradient(to right, #fa709a 0%, #fee140 100%) !important;
-            /*background: #EEAECA !important;
-            background: radial-gradient(circle,rgba(238, 174, 202, 1) 0%, rgba(148, 187, 233, 1) 100%) !important;*/
-            font-family:'Sora',sans-serif;
-            height:100vh;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            color:#ffffff;
-            overflow:hidden;
-            }
-
-        /* ------------- GLASS CARD ------------- */
-        .glass {
-            width: clamp(300px, 90vw, 450px);
-            padding: 40px 30px;
-            border-radius: 24px;
-            background: rgba(255 255 255 / .07);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255 255 255 / .18);
-            box-shadow: 0 8px 32px rgba(0 0 0 /.37);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 28px;
-        }
-    
-        /* ------------- NEON CIRCLE ------------- */
-        #central-circle {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(0, 255, 255, .1) 0%, transparent 70%);
-            border: 3px solid #fee140;
-            cursor: pointer;
-            position: relative;
-            transition: transform .4s cubic-bezier(.17, .67, .83, .67), box-shadow .4s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-    
-        #central-circle::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            border: 2px solid #fee140;
-            opacity: .6;
-            animation: ripple 2s infinite;
-        }
-    
-        @keyframes ripple {
-            0% {
-                transform: scale(.95);
-                opacity: .6
-            }
-    
-            100% {
-                transform: scale(1.4);
-                opacity: 0
-            }
-        }
-    
-        #central-circle:hover {
-            transform: scale(1.08);
-            box-shadow: 0 0 30px #fee140, 0 0 60px #fee140;
-        }
-    
-        /* ------------- STATE ANIMATIONS ------------- */
-        .listening {
-            animation: pulseMic 1.2s ease-in-out infinite;
-        }
-    
-        .speaking {
-            animation: spin 2s linear infinite;
-        }
-    
-        @keyframes pulseMic {
-    
-            0%,
-            100% {
-                transform: scale(1)
-            }
-    
-            50% {
-                transform: scale(1.12);
-                box-shadow: 0 0 25px #fee140;
-            }
-        }
-    
-        @keyframes spin {
-            from {
-                transform: rotate(0deg)
-            }
-    
-            to {
-                transform: rotate(360deg)
-            }
-        }
-    
-        /* ------------- MESSAGES ------------- */
-        #message-display {
-            font-size: 1.15rem;
-            text-align: center;
-            color : #000;
-            min-height: 28px;
-        }
-    
-        /* ------------- SETTINGS TOGGLE ------------- */
-        #settings-toggle {
-            position: absolute;
-            top: 24px;
-            right: 24px;
-            padding: 10px 14px;
-            border-radius: 50%;
-            backdrop-filter: blur(10px);
-            cursor: pointer;
-            transition: background .3s;
-            color: #000;
-        }
-    
-
-    
-        /* ------------- SETTINGS PANEL ------------- */
-        #settings-panel {
-            position: absolute;
-            top: 80px;
-            right: 24px;
-            padding: 20px;
-            border-radius: 16px;
-            background: rgba(0 0 0 /.45);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255 255 255 /.15);
-            color: #fff;
-            display: none;
-            flex-direction: column;
-            gap: 14px;
-            z-index: 10;
-        }
-    
-        #settings-panel.active {
-            display: flex
-        }
-    
-        #settings-panel a {
-            color: #00ffff;
-            text-decoration: none;
-            font-size: .9rem;
-        }
-    </style>
+    <link rel="stylesheet" href="index.css">
     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600&display=swap" rel="stylesheet">
 </head>
+
 <body>
 
     <div id="bg-animation"></div>
@@ -185,9 +26,27 @@
 
     <div class="glass">
         <div id="central-circle"></div>
+        <div id="modeLabel" style="font-size:.9rem; color:#fff; margin-top:8px;">
+            Mode: Chat
+        </div>
         <div id="message-display">Tap the circle to begin.</div>
+        <div class="mode-btn-row">
+            <button id="careBtn" class="mode-switch-btn">I need some support</button>
+            <button id="ventingBtn" class="mode-switch-btn">I just need to vent</button>
+            <button id="chatBtn" class="mode-switch-btn">Just Chat</button>
+        </div>
+    </div>
+    <div id="venting-notebook">
+        <div class="notebook-page">
+            <h2>RantBook</h2>
+            <ul id="transcript-list"></ul>
+        </div>
+        <button id="sendListenBtn">Send to AI</button>
+    </div>
+    <!-- Styles moved to index.css -->
     </div>
 
-        <script type="module" src="app.js"></script>
+    <script type="module" src="app.js"></script>
 </body>
+
 </html>

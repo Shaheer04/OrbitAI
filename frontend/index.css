@@ -1,0 +1,402 @@
+/* ------------- RESET & BASE ------------- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-image: linear-gradient(to right, #fa709a 0%, #fee140 100%) !important;
+    font-family: 'Sora', sans-serif;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    overflow: hidden;
+    position: relative;
+}
+
+/* ------------- GLASS CARD ------------- */
+.glass {
+    width: clamp(300px, 90vw, 450px);
+    padding: 40px 30px;
+    border-radius: 24px;
+    background: rgba(255, 255, 255, .07);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, .18);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, .37);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+    position: relative;
+    z-index: 2;
+}
+
+/* ------------- NEON CIRCLE ------------- */
+#central-circle {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--orb-glow-bg, rgba(0, 255, 255, 0.15)) 0%, transparent 70%);
+    box-shadow:
+        0 0 40px 10px var(--orb-glow),
+        0 0 80px 20px var(--orb-glow),
+        0 0 0 4px rgba(255, 255, 255, 0.25) inset;
+    border: 4px solid var(--orb-glow);
+    cursor: pointer;
+    position: relative;
+    transition: transform .4s cubic-bezier(.17, .67, .83, .67), box-shadow .4s, border-color .4s, background .4s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    text-align: center;
+    padding: 20px;
+    backdrop-filter: blur(5px);
+}
+
+/* Extra highlight for listen mode */
+#central-circle.listening-highlight {
+    box-shadow: 0 0 60px 20px #ffcc00, 0 0 120px 40px #fee140, 0 0 0 8px #fffbe6 inset;
+    border-color: #ffcc00;
+    animation: listenGlow 1.2s alternate infinite;
+}
+
+@keyframes listenGlow {
+    0% {
+        box-shadow: 0 0 60px 20px #ffcc00, 0 0 120px 40px #fee140, 0 0 0 8px #fffbe6 inset;
+    }
+
+    100% {
+        box-shadow: 0 0 80px 30px #ffcc00, 0 0 160px 60px #fee140, 0 0 0 12px #fffbe6 inset;
+    }
+}
+
+#central-circle::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 2px solid var(--orb-glow);
+    opacity: .6;
+    animation: ripple 2s infinite;
+}
+
+@keyframes ripple {
+    0% {
+        transform: scale(.95);
+        opacity: .6;
+    }
+
+    100% {
+        transform: scale(1.4);
+        opacity: 0;
+    }
+}
+
+#central-circle:hover {
+    transform: scale(1.08);
+    box-shadow: 0 0 30px #fee140, 0 0 60px #fee140;
+}
+
+/* ------------- STATE ANIMATIONS ------------- */
+.listening {
+    animation: pulseMic 1.2s ease-in-out infinite;
+}
+
+.speaking {
+    animation: spin 2s linear infinite;
+}
+
+@keyframes pulseMic {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.12);
+        box-shadow: 0 0 25px #fee140;
+    }
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ------------- MESSAGES ------------- */
+#message-display {
+    font-size: 1.15rem;
+    text-align: center;
+    color: #000;
+    min-height: 28px;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 15px 20px;
+    border-radius: 16px;
+    width: 100%;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Notebook text style */
+.notebook-text {
+    background: #fff9c4;
+    border-left: 4px solid #ffb86b;
+    padding: 15px;
+    border-radius: 0 12px 12px 0;
+    font-style: italic;
+}
+
+/* ------------- MODE BUTTONS ------------- */
+.mode-switch-btn {
+    background: rgba(255, 255, 255, 0.18);
+    border: none;
+    border-radius: 22px;
+    padding: 18px 18px;
+    color: #222;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.10), 0 1.5px 0 0 rgba(255, 255, 255, 0.10) inset;
+    letter-spacing: 0.01em;
+    outline: none;
+    transition: background .22s, box-shadow .22s, color .22s, transform .13s;
+    white-space: nowrap;
+    width: 100%;
+}
+
+.mode-switch-btn:hover,
+.mode-switch-btn:focus {
+    background: rgba(255, 255, 255, 0.32);
+    color: #ff5fa2;
+    box-shadow: 0 6px 24px 0 rgba(0, 0, 0, 0.18), 0 2px 0 0 rgba(255, 255, 255, 0.13) inset;
+    transform: translateY(-2px) scale(1.07);
+}
+
+.mode-btn-row {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    flex-direction: column;
+}
+
+/* ------------- SETTINGS TOGGLE ------------- */
+#settings-toggle {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    padding: 10px 14px;
+    border-radius: 50%;
+    backdrop-filter: blur(10px);
+    cursor: pointer;
+    transition: background .3s;
+    color: #000;
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    z-index: 10;
+}
+
+#settings-toggle:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* ------------- SETTINGS PANEL ------------- */
+#settings-panel {
+    position: absolute;
+    top: 80px;
+    right: 24px;
+    padding: 20px;
+    border-radius: 16px;
+    background: rgba(0, 0, 0, .45);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, .15);
+    color: #fff;
+    display: none;
+    flex-direction: column;
+    gap: 14px;
+    z-index: 10;
+    min-width: 200px;
+}
+
+#settings-panel.active {
+    display: flex;
+}
+
+#settings-panel a {
+    color: #00ffff;
+    text-decoration: none;
+    font-size: .9rem;
+}
+
+/* ------------- VENTING NOTEBOOK ------------- */
+#venting-notebook {
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    transform: translateY(-50%);
+    width: 300px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+    backdrop-filter: blur(20px);
+    display: none;
+    flex-direction: column;
+    gap: 20px;
+    z-index: 5;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.notebook-page {
+    background: #f9f9f9;
+    border-radius: 12px;
+    padding: 20px;
+    position: relative;
+    min-height: 200px;
+    max-height: 300px;
+    overflow-y: auto;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.notebook-page::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 30px;
+    width: 1px;
+    background: #ddd;
+    background-image: repeating-linear-gradient(to bottom,
+            #ddd,
+            #ddd 1px,
+            transparent 1px,
+            transparent 24px);
+}
+
+.notebook-page h2 {
+    margin-bottom: 15px;
+    color: #333;
+    text-align: center;
+    border-bottom: 2px solid #ffb86b;
+    padding-bottom: 10px;
+    font-size: 1.3rem;
+}
+
+#transcript-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+#transcript-list li {
+    margin-bottom: 15px;
+    padding: 12px 15px 12px 40px;
+    background: rgba(255, 184, 107, 0.1);
+    border-radius: 8px;
+    border-left: 3px solid #ffb86b;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #333;
+    position: relative;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+#transcript-list li:before {
+    content: "❝";
+    position: absolute;
+    left: 15px;
+    top: 10px;
+    color: #ffb86b;
+    font-size: 1.2rem;
+}
+
+/* Send to AI Button */
+button#sendListenBtn {
+    background: linear-gradient(45deg, #ff6b6b, #ffb86b);
+    border: none;
+    border-radius: 22px;
+    padding: 15px 20px;
+    color: white;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+    letter-spacing: 0.02em;
+    outline: none;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    width: 100%;
+    margin-top: 10px;
+}
+
+button#sendListenBtn:hover,
+button#sendListenBtn:focus {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+}
+
+button#sendListenBtn:active {
+    transform: translateY(0);
+}
+
+/* ------------- MODE COLORS ------------- */
+:root {
+    --orb-glow: #ffb86b;
+    /* calm pastel orange */
+    --orb-glow-bg: rgba(255, 184, 107, 0.18);
+    --card-border: #ffb86b;
+}
+
+body {
+    --orb-glow: #ffb86b;
+    --orb-glow-bg: rgba(255, 184, 107, 0.18);
+    --card-border: #ffb86b;
+}
+
+body[data-mode="listen"] {
+    --orb-glow: #ffcc00;
+    /* mellow yellow */
+    --orb-glow-bg: rgba(255, 204, 0, 0.18);
+    --card-border: #ffcc00;
+}
+
+body[data-mode="care"] {
+    --orb-glow: #ff5fa2;
+    /* soft pink */
+    --orb-glow-bg: rgba(255, 95, 162, 0.18);
+    --card-border: #ff5fa2;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #venting-notebook {
+        width: 250px;
+        left: 10px;
+        padding: 15px;
+    }
+
+    .notebook-page {
+        padding: 15px;
+    }
+
+    #central-circle {
+        width: 180px;
+        height: 180px;
+    }
+
+    .glass {
+        padding: 30px 20px;
+    }
+}
